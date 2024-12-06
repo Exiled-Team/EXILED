@@ -19,11 +19,11 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CheckpointKiller.OnTriggerEnter"/>.
+    /// Patches <see cref="PitKiller.OnTriggerEnter"/>.
     /// Adds the <see cref="Handlers.Player.EnteringKillerCollision"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EnteringKillerCollision))]
-    [HarmonyPatch(typeof(CheckpointKiller), nameof(CheckpointKiller.OnTriggerEnter))]
+    [HarmonyPatch(typeof(PitKiller), nameof(PitKiller.OnTriggerEnter))]
     internal static class EnteringKillerCollision
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -32,8 +32,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label ret = generator.DefineLabel();
 
-            int offset = -5;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
+            const int offset = -1;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -61,8 +61,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            foreach (CodeInstruction instruction in newInstructions)
+                yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
