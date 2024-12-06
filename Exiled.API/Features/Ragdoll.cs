@@ -110,10 +110,14 @@ namespace Exiled.API.Features
         public DeathAnimation[] DeathAnimations => Base.AllDeathAnimations;
 
         /// <summary>
-        /// Gets a value indicating whether or not the ragdoll has been already cleaned up.
+        /// Gets or sets a value indicating whether or not the ragdoll has freeze or not.
         /// </summary>
-        [EProperty(readOnly: true, category: nameof(Ragdoll))]
-        public bool IsFrozen => Base._frozen;
+        [EProperty(category: nameof(Ragdoll))]
+        public bool IsFrozen
+        {
+            get => Base.Frozen;
+            set => Base.Frozen = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the ragdoll can be cleaned up.
@@ -419,6 +423,11 @@ namespace Exiled.API.Features
         /// Un-spawns the ragdoll.
         /// </summary>
         public void UnSpawn() => NetworkServer.UnSpawn(GameObject);
+
+        /// <summary>
+        /// Freeze the ragdoll.
+        /// </summary>
+        public void Freeze() => Base.FreezeRagdoll();
 
         /// <summary>
         /// Returns the Ragdoll in a human-readable format.

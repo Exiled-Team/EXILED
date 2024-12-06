@@ -11,7 +11,7 @@ namespace Exiled.API.Features.DamageHandlers
 
     using CustomPlayerEffects;
     using Enums;
-    using Exiled.API.Extensions;
+    using Extensions;
     using Items;
     using PlayerStatsSystem;
     using UnityEngine;
@@ -102,7 +102,7 @@ namespace Exiled.API.Features.DamageHandlers
                     Base = { Owner = attacker.ReferenceHub },
                 };
 
-                CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler(firearm.Base, damage));
+                CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler { Firearm = firearm.Base, Damage = damage });
 
                 return;
             }
@@ -126,7 +126,7 @@ namespace Exiled.API.Features.DamageHandlers
             if (firearm.Owner != attacker)
                 firearm.ChangeOwner(firearm.Owner, attacker);
 
-            CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler(firearm.Base, damage));
+            CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler { Firearm = firearm.Base, Damage = damage });
         }
 
         /// <summary>

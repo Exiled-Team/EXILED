@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="AdminToyType.cs" company="Exiled Team">
+// <copyright file="SpawnableWave.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -8,29 +8,28 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// Unique identifier for the different types of admin toys.
+    /// All spawnable factions and mini-waves available.
     /// </summary>
-    /// <seealso cref="Features.Toys.AdminToy.ToyType"/>
-    public enum AdminToyType
+    public enum SpawnableWave
     {
         /// <summary>
-        /// Primitive Object toy.
+        /// Represents a normal spawnable Ntf wave.
         /// </summary>
-        PrimitiveObject,
+        NtfWave,
 
         /// <summary>
-        /// Light source toy.
+        /// Represents a spawnable smaller Ntf wave.
         /// </summary>
-        LightSource,
+        NtfMiniWave,
 
         /// <summary>
-        /// ShootingTarget toy.
+        /// Represents a normal spawnable Chaos wave.
         /// </summary>
-        ShootingTarget,
+        ChaosWave,
 
         /// <summary>
-        /// Speaker toy.
+        /// Represents a spawnable smaller Chaos wave.
         /// </summary>
-        Speaker,
+        ChaosMiniWave,
     }
 }

@@ -62,7 +62,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the color of the primitive.
+        /// Gets or sets the color of the light.
         /// </summary>
         public Color Color
         {
@@ -73,10 +73,55 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets or sets a value indicating whether the light should cause shadows from other objects.
         /// </summary>
-        public bool ShadowEmission
+        public LightShadows Shadow
         {
-            get => Base.NetworkLightShadows;
-            set => Base.NetworkLightShadows = value;
+            get => Base.NetworkShadowType;
+            set => Base.NetworkShadowType = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the light shape.
+        /// </summary>
+        public LightShape Shape
+        {
+            get => Base.NetworkLightShape;
+            set => Base.NetworkLightShape = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the shadow strength.
+        /// </summary>
+        public float ShadowStrength
+        {
+            get => Base.NetworkShadowStrength;
+            set => Base.NetworkShadowStrength = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the Light Type of this light.
+        /// </summary>
+        public LightType LightType
+        {
+            get => Base.NetworkLightType;
+            set => Base.NetworkLightType = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the spot angle of this light.
+        /// </summary>
+        public float SpotAngle
+        {
+            get => Base.NetworkSpotAngle;
+            set => Base.NetworkSpotAngle = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the inner spot angle of this light.
+        /// </summary>
+        public float InnerSpotAngle
+        {
+            get => Base.NetworkInnerSpotAngle;
+            set => Base.NetworkInnerSpotAngle = value;
         }
 
         /// <summary>

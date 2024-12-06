@@ -22,7 +22,6 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     using static Interactables.Interobjects.ElevatorChamber;
-    using static Interactables.Interobjects.ElevatorManager;
 
     using BaseElevatorDoor = Interactables.Interobjects.ElevatorDoor;
     using ElevatorDoor = Doors.ElevatorDoor;
@@ -94,8 +93,8 @@ namespace Exiled.API.Features
         [EProperty(category: nameof(Lift))]
         public ElevatorSequence Status
         {
-            get => Base._curSequence;
-            set => Base._curSequence = value;
+            get => Base.CurSequence;
+            set => Base.CurSequence = value;
         }
 
         /// <summary>
@@ -115,7 +114,8 @@ namespace Exiled.API.Features
             ElevatorGroup.GateB => ElevatorType.GateB,
             ElevatorGroup.LczA01 or ElevatorGroup.LczA02 => ElevatorType.LczA,
             ElevatorGroup.LczB01 or ElevatorGroup.LczB02 => ElevatorType.LczB,
-            ElevatorGroup.Nuke => ElevatorType.Nuke,
+            ElevatorGroup.Nuke01 => ElevatorType.Nuke1,
+            ElevatorGroup.Nuke02 => ElevatorType.Nuke2,
             _ => ElevatorType.Unknown,
         };
 
@@ -141,7 +141,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the lift is locked.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Lift))]
-        public bool IsLocked => Base.ActiveLocks > 0;
+        public bool IsLocked => Base.ActiveLocksAllDoors > 0;
 
         /// <summary>
         /// Gets or sets the <see cref="AnimationTime"/>.
@@ -178,15 +178,15 @@ namespace Exiled.API.Features
         public float MoveTime => AnimationTime + RotationTime + DoorOpenTime + DoorCloseTime;
 
         /// <summary>
-        /// Gets the <see cref="CurrentLevel"/>.
+        /// Gets the <see cref="NextLevel"/>.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Lift))]
-        public int CurrentLevel => Base.CurrentLevel;
+        public int NextLevel => Base.NextLevel;
 
         /// <summary>
         /// Gets the <see cref="CurrentDestination"/>.
         /// </summary>
-        public ElevatorDoor CurrentDestination => Door.Get(Base.CurrentDestination).As<ElevatorDoor>();
+        public ElevatorDoor CurrentDestination => Door.Get(Base.DestinationDoor).As<ElevatorDoor>();
 
         /// <summary>
         /// Gets the base <see cref="ElevatorChamber"/>.
@@ -338,8 +338,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="level">The destination level.</param>
         /// <param name="isForced">Indicates whether the start will be forced or not.</param>
-        /// <returns><see langword="true"/> if the lift was started successfully; otherwise, <see langword="false"/>.</returns>
-        public bool TryStart(int level, bool isForced = false) => TrySetDestination(Group, level, isForced);
+        public void Start(int level, bool isForced = false) => Base.ServerSetDestination(level, isForced);
 
         /// <summary>
         /// Locks the lift.
@@ -388,6 +387,6 @@ namespace Exiled.API.Features
         /// Returns the Lift in a human-readable format.
         /// </summary>
         /// <returns>A string containing Lift-related data.</returns>
-        public override string ToString() => $"{Type} {Status} [{CurrentLevel}] *{IsLocked}*";
+        public override string ToString() => $"{Type} {Status} [{NextLevel}] *{IsLocked}*";
     }
 }

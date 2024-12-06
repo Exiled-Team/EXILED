@@ -56,12 +56,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         /// <summary>
         /// Gets or sets the replicated clip.
         /// </summary>
-        public ReplicatedProperty<Firearm, byte> ReplicatedClip { get; set; }
+        public ReplicatedProperty<Firearm, int> ReplicatedClip { get; set; }
 
         /// <summary>
         /// Gets or sets the replicated max ammo.
         /// </summary>
-        public ReplicatedProperty<Firearm, byte> ReplicatedMaxAmmo { get; set; }
+        public ReplicatedProperty<Firearm, int> ReplicatedMaxAmmo { get; set; }
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -123,7 +123,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 
             Firearm.Recoil = FirearmSettings.RecoilSettings;
 
-            ReplicatedMaxAmmo = new ReplicatedProperty<Firearm, byte>(
+            ReplicatedMaxAmmo = new ReplicatedProperty<Firearm, int>(
                 firearm => firearm.MaxAmmo,
                 (firearm, value) => firearm.MaxAmmo = value,
                 Firearm);
@@ -133,7 +133,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 
             if (overrideReload)
             {
-                ReplicatedClip = new ReplicatedProperty<Firearm, byte>(
+                ReplicatedClip = new ReplicatedProperty<Firearm, int>(
                     firearm => firearm.Ammo,
                     (firearm, value) => firearm.Ammo = value,
                     Firearm);
@@ -233,7 +233,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
                 return;
 
             byte clipSize = FirearmSettings.ClipSize;
-            byte remainingClip = ReplicatedClip.ReplicatedValue;
+            int remainingClip = ReplicatedClip.ReplicatedValue;
 
             if (remainingClip >= clipSize)
                 return;

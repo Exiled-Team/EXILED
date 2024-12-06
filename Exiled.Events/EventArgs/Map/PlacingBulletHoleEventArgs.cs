@@ -8,9 +8,8 @@
 namespace Exiled.Events.EventArgs.Map
 {
     using API.Features;
-
+    using Exiled.API.Features.Items;
     using Interfaces;
-
     using UnityEngine;
 
     /// <summary>
@@ -27,11 +26,15 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="hit">
         /// <inheritdoc cref="RaycastHit" />
         /// </param>
-        public PlacingBulletHoleEventArgs(Player owner, RaycastHit hit)
+        /// <param name="firearm">
+        /// <inheritdoc cref="Firearm" />
+        /// </param>
+        public PlacingBulletHoleEventArgs(Player owner, RaycastHit hit, InventorySystem.Items.Firearms.Firearm firearm)
         {
             Player = owner;
             Position = hit.point;
             Rotation = Quaternion.LookRotation(hit.normal);
+            Firearm = Item.Get(firearm).As<Firearm>();
         }
 
         /// <summary>
@@ -53,5 +56,10 @@ namespace Exiled.Events.EventArgs.Map
         /// Gets the decal owner.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets the firearm that triggered the event.
+        /// </summary>
+        public Firearm Firearm { get; }
     }
 }

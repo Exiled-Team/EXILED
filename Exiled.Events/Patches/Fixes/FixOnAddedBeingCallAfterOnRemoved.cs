@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerAddItem(Inventory, ItemType, ushort, ItemPickupBase)"/>.
+    /// Patches <see cref="InventoryExtensions.ServerAddItem"/>.
     /// Fix than NW call <see cref="InventoryExtensions.OnItemRemoved"/> before <see cref="InventoryExtensions.OnItemAdded"/> for AmmoItem.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerAddItem))]

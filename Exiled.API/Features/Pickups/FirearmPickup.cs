@@ -7,13 +7,15 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using InventorySystem.Items;
-    using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Firearms.Modules;
 
     using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
     using FirearmItem = InventorySystem.Items.Firearms.Firearm;
@@ -41,10 +43,10 @@ namespace Exiled.API.Features.Pickups
             : base(type)
         {
             Base = (BaseFirearm)((Pickup)this).Base;
-            IsDistributed = true;
+            Base.OnDistributed();
 
-            if (type is ItemType.ParticleDisruptor && Status.Ammo <= 0)
-                Status = new FirearmStatus(5, FirearmStatusFlags.MagazineInserted, 0);
+            if (type is ItemType.ParticleDisruptor && Base.Template.Modules.OfType<MagazineModule>().FirstOrDefault()!.AmmoStored <= 0)
+                Base.Template.Modules.OfType<MagazineModule>().FirstOrDefault()!.AmmoStored = 5;
         }
 
         /// <summary>
@@ -59,56 +61,26 @@ namespace Exiled.API.Features.Pickups
         public FirearmType FirearmType => Type.GetFirearmType();
 
         /// <summary>
-        /// Gets or sets the <see cref="Enums.AmmoType"/> of the firearm.
+        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
         [EProperty(category: nameof(FirearmPickup))]
-        public AmmoType AmmoType { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the pickup is already distributed.
-        /// </summary>
-        [EProperty(category: nameof(FirearmPickup))]
-        public bool IsDistributed
-        {
-            get => Base.Distributed;
-            set => Base.Distributed = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="FirearmStatus"/>.
-        /// </summary>
-        [EProperty(category: nameof(FirearmPickup))]
-        public FirearmStatus Status
-        {
-            get => Base.NetworkStatus;
-            set => Base.NetworkStatus = value;
-        }
+        public AmmoType AmmoType { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating how many ammo have this <see cref="FirearmPickup"/>.
         /// </summary>
         [EProperty(category: nameof(FirearmPickup))]
-        public byte Ammo
+        public int Ammo
         {
-            get => Base.NetworkStatus.Ammo;
-            set => Base.NetworkStatus = new(value, Base.NetworkStatus.Flags, Base.NetworkStatus.Attachments);
+            get => Base.Template.Modules.OfType<MagazineModule>().FirstOrDefault()?.AmmoStored ?? 0;
+            set => Base.Template.Modules.OfType<MagazineModule>().FirstOrDefault()!.AmmoStored = value;
         }
 
         /// <summary>
         /// Gets or sets the max ammo the Firearm can have.
         /// </summary>
         [EProperty(category: nameof(FirearmPickup))]
-        public byte MaxAmmo { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="FirearmStatusFlags"/>.
-        /// </summary>
-        [EProperty(category: nameof(FirearmPickup))]
-        public FirearmStatusFlags Flags
-        {
-            get => Base.NetworkStatus.Flags;
-            set => Base.NetworkStatus = new(Base.NetworkStatus.Ammo, value, Base.NetworkStatus.Attachments);
-        }
+        public int MaxAmmo { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the attachment code have this <see cref="FirearmPickup"/>.
@@ -116,25 +88,24 @@ namespace Exiled.API.Features.Pickups
         [EProperty(category: nameof(FirearmPickup))]
         public uint Attachments
         {
-            get => Base.NetworkStatus.Attachments;
-            set => Base.NetworkStatus = new(Base.NetworkStatus.Ammo, Base.NetworkStatus.Flags, value);
+            get => Base.Worldmodel.AttachmentCode;
+            set => Base.Worldmodel.AttachmentCode = value;
         }
 
         /// <summary>
         /// Returns the FirearmPickup in a human readable format.
         /// </summary>
         /// <returns>A string containing FirearmPickup related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{IsDistributed}| -{Ammo}-";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Ammo}-";
 
         /// <inheritdoc/>
         internal override void ReadItemInfo(Item item)
         {
             base.ReadItemInfo(item);
 
-            if (item is Items.Firearm firearm)
+            if (item is Firearm firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
-                AmmoType = firearm.AmmoType;
             }
         }
 
@@ -145,14 +116,8 @@ namespace Exiled.API.Features.Pickups
 
             if (itemBase is FirearmItem firearm)
             {
-                MaxAmmo = firearm switch
-                {
-                    AutomaticFirearm autoFirearm => autoFirearm._baseMaxAmmo,
-                    Revolver => 6,
-                    Shotgun shotgun => shotgun._ammoCapacity,
-                    _ => 0
-                };
-                AmmoType = firearm is AutomaticFirearm automaticFirearm ? automaticFirearm._ammoType.GetAmmoType() : firearm.ItemTypeId.GetAmmoType();
+                MaxAmmo = firearm.GetTotalMaxAmmo();
+                AmmoType = (firearm.Modules.OfType<MagazineModule>().FirstOrDefault()?.AmmoType ?? ItemType.None).GetAmmoType();
             }
         }
     }

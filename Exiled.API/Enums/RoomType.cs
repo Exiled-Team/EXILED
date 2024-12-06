@@ -235,9 +235,14 @@ namespace Exiled.API.Enums
         EzGateB,
 
         /// <summary>
-        /// Entrance Zone's Shelter rfoom.
+        /// Entrance Zone's Shelter room.
         /// </summary>
         EzShelter,
+
+        /// <summary>
+        /// Entrance Zone's straight hall with Chef's locked room.
+        /// </summary>
+        EzChef,
 
         /// <summary>
         /// The Pocket Dimension.
@@ -265,9 +270,14 @@ namespace Exiled.API.Enums
         Lcz330,
 
         /// <summary>
-        /// Entrance Zone's straight hall before the entrance/heavy checkpoint.
+        /// Entrance Zone's straight hall before the entrance/heavy checkpoint (Checkpoint Hallway A).
         /// </summary>
-        EzCheckpointHallway,
+        EzCheckpointHallwayA,
+
+        /// <summary>
+        /// Entrance Zone's straight hall before the entrance/heavy checkpoint (Checkpoint Hallway B).
+        /// </summary>
+        EzCheckpointHallwayB,
 
         /// <summary>
         /// Heavy Containment Zone's test room's straight hall.
@@ -283,5 +293,40 @@ namespace Exiled.API.Enums
         /// Heavy Containment Elevator Zone's System B room.
         /// </summary>
         HczElevatorB,
+
+        /// <summary>
+        /// Waterfall Room.
+        /// </summary>
+        HczCrossRoomWater,
+
+        /// <summary>
+        /// Heavy Containment Corner Room.
+        /// </summary>
+        HczCornerDeep,
+
+        /// <summary>
+        /// Heavy Containment Junk Intersection.
+        /// </summary>
+        HczIntersectionJunk,
+
+        /// <summary>
+        /// Intersection in Heavy Containment.
+        /// </summary>
+        HczIntersection,
+
+        /// <summary>
+        /// Straight Hallway variant in Heavy Containment.
+        /// </summary>
+        HczStraightC,
+
+        /// <summary>
+        /// Straight Hallway with Pipes in Heavy Containment.
+        /// </summary>
+        HczStraightPipeRoom,
+
+        /// <summary>
+        /// Straight Hallway variant in Heavy Containment.
+        /// </summary>
+        HczStraightVariant,
     }
 }

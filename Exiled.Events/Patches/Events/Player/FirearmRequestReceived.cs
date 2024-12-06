@@ -28,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    /*
     /// <summary>
     /// Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived" />.
     /// Adds <see cref="Player.ReloadingWeapon" />, <see cref="Player.ReloadedWeapon" />,
@@ -329,4 +330,5 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
+    */
 }

@@ -52,8 +52,13 @@ namespace Exiled.API.Enums
         Surface = 8,
 
         /// <summary>
+        /// The Pocket Dimension.
+        /// </summary>
+        Pocket = 16,
+
+        /// <summary>
         /// An unknown type of zone.
         /// </summary>
-        Other = 16,
+        Other = 32,
     }
 }

@@ -57,19 +57,18 @@ namespace Exiled.API.Features.Scp914Processors
         /// <summary>
         /// Upgrades an item from player's inventory.
         /// </summary>
-        /// <param name="player">Player from whose inventory item will be chosen.</param>
         /// <param name="item">Item to update.</param>
         /// <param name="scp914KnobSetting">Setting to use.</param>
         /// <returns>A new upgraded item.</returns>
-        public Item UpgradeInventoryItem(Player player, Item item, Scp914KnobSetting scp914KnobSetting) => Item.Get(Base.OnInventoryItemUpgraded(scp914KnobSetting, player.ReferenceHub, item.Serial));
+        public Scp914Result UpgradeInventoryItem(Item item, Scp914KnobSetting scp914KnobSetting) => Base.UpgradeInventoryItem(scp914KnobSetting, item.Base);
 
         /// <summary>
-        /// Upgrades an pickup from player's inventory.
+        /// Upgrades a pickup from player's inventory.
         /// </summary>
         /// <param name="pickup">Pickup to update.</param>
         /// <param name="scp914KnobSetting">Setting to use.</param>
         /// <returns>A new upgraded pickup.</returns>
-        public Pickup UpgradePickup(Pickup pickup, Scp914KnobSetting scp914KnobSetting) => Pickup.Get(Base.OnPickupUpgraded(scp914KnobSetting, pickup.Base, Scp914.MovingVector));
+        public Scp914Result UpgradePickup(Pickup pickup, Scp914KnobSetting scp914KnobSetting) => Base.UpgradePickup(scp914KnobSetting, pickup.Base);
 
         /// <summary>
         /// Gets a random output item.

@@ -24,6 +24,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.RoleAssign;
     using UnityEngine;
 
+    using DestroyedGameRole = PlayerRoles.DestroyedRole;
     using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
     using HumanGameRole = PlayerRoles.HumanRole;
     using OverwatchGameRole = PlayerRoles.Spectating.OverwatchRole;
@@ -299,6 +300,7 @@ namespace Exiled.API.Features.Roles
             SpectatorGameRole spectatorRole => new SpectatorRole(spectatorRole),
             HumanGameRole humanRole => new HumanRole(humanRole),
             FilmmakerGameRole filmmakerRole => new FilmMakerRole(filmmakerRole),
+            DestroyedGameRole destroyedRole => new DestroyedRole(destroyedRole),
             _ => new NoneRole(role),
         };
     }

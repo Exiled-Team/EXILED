@@ -11,7 +11,7 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
 
     using Enums;
-    using Exiled.API.Extensions;
+    using Extensions;
     using GameCore;
 
     using PlayerRoles;
@@ -46,12 +46,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => ReferenceHub.LocalHub && ReferenceHub.LocalHub.characterClassManager.RoundStarted;
+        public static bool IsStarted => ReferenceHub._localHub != null && ReferenceHub._localHub.characterClassManager.RoundStarted;
 
         /// <summary>
         /// Gets a value indicating whether the round in progress or not.
         /// </summary>
-        public static bool InProgress => ReferenceHub.LocalHub != null && RoundSummary.RoundInProgress();
+        public static bool InProgress => ReferenceHub._localHub != null && RoundSummary.RoundInProgress();
 
         /// <summary>
         /// Gets a value indicating whether the round is ended or not.
@@ -64,12 +64,12 @@ namespace Exiled.API.Features
         public static bool IsLobby => !(IsEnded || IsStarted);
 
         /// <summary>
-        /// Gets or sets a value indicating the amount of Chaos Targets remaining.
+        /// Gets or sets a value indicating the amount of Extra Targets remaining.
         /// </summary>
-        public static int ChaosTargetCount
+        public static int ExtraTargetsCount
         {
-            get => RoundSummary.singleton.Network_chaosTargetCount;
-            set => RoundSummary.singleton.Network_chaosTargetCount = value;
+            get => RoundSummary.singleton.Network_extraTargets;
+            set => RoundSummary.singleton.Network_extraTargets = value;
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Exiled.API.Features
                 targetOffset = value;
                 foreach (Player player in Player.List)
                 {
-                    player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
+                    player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_extraTargets), RoundSummary.singleton._extraTargets + TargetOffset);
                 }
             }
         }

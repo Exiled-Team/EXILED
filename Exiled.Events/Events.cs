@@ -17,7 +17,6 @@ namespace Exiled.Events
     using CentralAuth;
     using Exiled.API.Interfaces;
     using Exiled.Events.Features;
-    using HarmonyLib;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
     using PlayerRoles.Ragdolls;
@@ -62,7 +61,7 @@ namespace Exiled.Events
             PlayerAuthenticationManager.OnInstanceModeChanged -= RoleAssigner.CheckLateJoin;
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
-            MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
+            MapGeneration.SeedSynchronizer.OnGenerationFinished += Handlers.Internal.MapGenerated.OnMapGenerated;
             UsableItemsController.ServerOnUsingCompleted += Handlers.Internal.Round.OnServerOnUsingCompleted;
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
@@ -77,7 +76,7 @@ namespace Exiled.Events
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
             InventorySystem.InventoryExtensions.OnItemRemoved += Handlers.Player.OnItemRemoved;
 
-            RespawnManager.ServerOnRespawned += Handlers.Server.OnRespawnedTeam;
+            WaveManager.OnWaveSpawned += Handlers.Server.OnRespawnedTeam;
 
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
@@ -110,7 +109,7 @@ namespace Exiled.Events
             Unpatch();
 
             SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
-            MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Internal.MapGenerated.OnMapGenerated;
+            MapGeneration.SeedSynchronizer.OnGenerationFinished -= Handlers.Internal.MapGenerated.OnMapGenerated;
             UsableItemsController.ServerOnUsingCompleted -= Handlers.Internal.Round.OnServerOnUsingCompleted;
 
             Handlers.Server.WaitingForPlayers -= Handlers.Internal.Round.OnWaitingForPlayers;
@@ -126,7 +125,7 @@ namespace Exiled.Events
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
             InventorySystem.InventoryExtensions.OnItemRemoved -= Handlers.Player.OnItemRemoved;
 
-            RespawnManager.ServerOnRespawned -= Handlers.Server.OnRespawnedTeam;
+            WaveManager.OnWaveSpawned -= Handlers.Server.OnRespawnedTeam;
 
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;

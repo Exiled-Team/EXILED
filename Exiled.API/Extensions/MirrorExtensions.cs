@@ -13,22 +13,11 @@ namespace Exiled.API.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-    using System.Text;
 
     using Features;
-    using Features.Core.Generic.Pools;
-    using InventorySystem.Items.Firearms;
     using Mirror;
     using PlayerRoles;
-    using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.Subroutines;
-    using PlayerRoles.Voice;
-    using RelativePositioning;
-    using Respawning;
-    using UnityEngine;
-
-    using EIntercom = Exiled.API.Features.Intercom;
 
     /// <summary>
     /// A set of extensions for <see cref="Mirror"/> Networking.

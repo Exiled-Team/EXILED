@@ -125,6 +125,21 @@ namespace Exiled.API.Features
             ["SURFACE AIRLOCK"] = CameraType.SurfaceAirlock,
             ["SURFACE BRIDGE"] = CameraType.SurfaceBridge,
             ["TUNNEL ENTRANCE"] = CameraType.TunnelEntrance,
+
+            // 14.0
+            ["JUNK MAIN"] = CameraType.HczJunkMain,
+            ["JUNK HALLWAY"] = CameraType.HczJunkHallway,
+            ["CORNER DEEP"] = CameraType.HczCornerDeep,
+            ["DSS-08"] = CameraType.HczDss08,
+            ["MICROHID STAIRS"] = CameraType.HczMicroHidStairs,
+            ["PIPES HALLWAY"] = CameraType.HczPipesHallway,
+            ["PIPES MAIN"] = CameraType.HczPipesMain,
+            ["WARHEAD STARBOARD ELEVATOR"] = CameraType.HczWarheadStarboardElevator,
+            ["MICROHID MAIN"] = CameraType.HczMicroHidMain,
+            ["MICROHID LAB"] = CameraType.HczMicroHidLab,
+            ["WARHEAD TOP ELEVATORS"] = CameraType.HczWarheadTopElevators,
+            ["WARHEAD CONNECTOR"] = CameraType.HczWarheadConnector,
+            ["WARHEAD PORT ELEVATOR"] = CameraType.HczWarheadPortElevator,
         };
 
         private Room room;

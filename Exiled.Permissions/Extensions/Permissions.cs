@@ -14,16 +14,13 @@ namespace Exiled.Permissions.Extensions
     using System.Text;
 
     using CommandSystem;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core.Generic.Pools;
     using Features;
-
     using Properties;
-
+    using Query;
     using RemoteAdmin;
-
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
@@ -183,12 +180,9 @@ namespace Exiled.Permissions.Extensions
             {
                 return true;
             }
-            else if (sender is PlayerCommandSender || sender is UserPrint)
+            else if (sender is PlayerCommandSender || sender is QueryCommandSender)
             {
-                if (Player.Get(sender.SenderId) is not Player player)
-                    return false;
-
-                return player.CheckPermission(permission);
+                return Player.Get(sender.SenderId) is Player player && player.CheckPermission(permission);
             }
 
             return false;

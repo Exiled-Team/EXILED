@@ -21,11 +21,11 @@ namespace Exiled.Events.Patches.Events.Scp106
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp106StalkAbility.ServerProcessCmd"/>.
+    /// Patches <see cref="Scp106StalkAbility.UpdateServerside"/>.
     /// To add the <see cref="Handlers.Scp106.ExitStalking"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp106), nameof(Handlers.Scp106.ExitStalking))]
-    [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.IsActive), MethodType.Setter)]
+    [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.UpdateServerside))]
     public class ExitStalking
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -34,22 +34,17 @@ namespace Exiled.Events.Patches.Events.Scp106
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ExitStalkingEventArgs));
 
-            Label continueLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
-            int offset = -3;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
+
+            const int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.OperandIs(Method(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.ServerSetStalk), new[] { typeof(bool) }))) + offset;
             newInstructions.InsertRange(
                 index,
-                new CodeInstruction[]
+                new[]
                 {
-                    // if (value is false) continue;
-                    new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Beq_S, continueLabel),
-
                     // Player.Get(this.Owner);
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.Owner))),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // true
@@ -70,14 +65,10 @@ namespace Exiled.Events.Patches.Events.Scp106
                     new(OpCodes.Brfalse_S, returnLabel),
                 });
 
-            offset = -3;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
-            newInstructions[index].labels.Add(continueLabel);
-
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            foreach (CodeInstruction instruction in newInstructions)
+                yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
