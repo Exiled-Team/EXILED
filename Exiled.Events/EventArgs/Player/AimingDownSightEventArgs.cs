@@ -26,25 +26,20 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="firearm">
         /// <inheritdoc cref="Firearm" />
         /// </param>
-        /// <param name="adsIn">
-        /// <inheritdoc cref="AdsIn" />
+        /// <param name="aiming">
+        /// <inheritdoc cref="Aiming" />
         /// </param>
-        public AimingDownSightEventArgs(Player player, Firearm firearm, bool adsIn)
+        public AimingDownSightEventArgs(Player player, Firearm firearm, bool aiming)
         {
             Firearm = firearm;
             Player = player;
-            AdsIn = adsIn;
+            Aiming = aiming;
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is aiming down sight in.
+        /// Gets a value indicating whether the player starts aiming or stops aiming.
         /// </summary>
-        public bool AdsIn { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the player is aiming down sight out.
-        /// </summary>
-        public bool AdsOut => !AdsIn;
+        public bool Aiming { get; }
 
         /// <summary>
         /// Gets the <see cref="API.Features.Items.Firearm" /> used to trigger the aim action.
